@@ -13,23 +13,6 @@
         <maven.compiler.target>18</maven.compiler.target>
     </properties>
 
-    <distributionManagement>
-        <!--        <repository>-->
-        <!--            <id>github</id>-->
-        <!--            <url>https://maven.pkg.github.com/vetal7772/project-maven-test-addPackage/tree/develop</url>-->
-        <!--            <snapshots>-->
-        <!--                <enabled>true</enabled>-->
-        <!--            </snapshots>-->
-        <!--        </repository>-->
-        <repository>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/vetal7772/project-maven-master/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </distributionManagement>
-
     <dependencies>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -37,26 +20,23 @@
             <version>3.12.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-controls -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>18.0.1</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
+        <dependency>
+            <groupId>com.javarush</groupId>
+            <artifactId>desktop-game-engine</artifactId>
+            <version>1.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>5.8.2</version>
             <scope>test</scope>
-        </dependency>
-
-
-        <dependency>
-            <groupId>com.javarush</groupId>
-            <artifactId>desktop-game-engine</artifactId>
-            <version>1.0</version>
         </dependency>
 
 
@@ -71,7 +51,6 @@
 
             </resource>
         </resources>
-
 
         <plugins>
             <!-- Usual compilation -->
@@ -109,6 +88,9 @@
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
+                <goals>
+                    <project>package</project>
+                </goals>
                 <configuration>
                     <mainClass>com.javarush.games.racer.RacerGame</mainClass>
                 </configuration>
@@ -124,9 +106,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>
-                                org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader
-                            </mainClass>
+                            <mainClass>org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader</mainClass>
                         </manifest>
                         <manifestEntries>
                             <Rsrc-Main-Class>com.javarush.games.racer.RacerGame</Rsrc-Main-Class>
@@ -147,9 +127,7 @@
                 </configuration>
             </plugin>
 
-
         </plugins>
-
-
     </build>
+
 </project>
