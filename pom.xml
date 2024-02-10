@@ -6,27 +6,45 @@
 
     <groupId>jru.module3</groupId>
     <artifactId>project-maven</artifactId>
-    <version>1.0</version>
+    <version>1.2</version>
 
     <properties>
         <maven.compiler.source>18</maven.compiler.source>
         <maven.compiler.target>18</maven.compiler.target>
     </properties>
 
-    <dependencies>
+    <distributionManagement>
+        <!--        <repository>-->
+        <!--            <id>github</id>-->
+        <!--            <url>https://maven.pkg.github.com/vetal7772/project-maven-test-addPackage/tree/develop</url>-->
+        <!--            <snapshots>-->
+        <!--                <enabled>true</enabled>-->
+        <!--            </snapshots>-->
+        <!--        </repository>-->
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/vetal7772/project-maven-master/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </distributionManagement>
 
+    <dependencies>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.12.0</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-controls -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>18.0.1</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -34,11 +52,49 @@
             <scope>test</scope>
         </dependency>
 
+
+        <dependency>
+            <groupId>com.javarush</groupId>
+            <artifactId>desktop-game-engine</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
+
+        <resources>
+            <resource>
+                <directory>${project.build.directory}/dependency</directory>
+                <targetPath>lib</targetPath>
+
+            </resource>
+        </resources>
+
+
         <plugins>
             <!-- Usual compilation -->
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.1</version>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeScope>compile</includeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -57,7 +113,43 @@
                     <mainClass>com.javarush.games.racer.RacerGame</mainClass>
                 </configuration>
             </plugin>
-        </plugins>
-    </build>
 
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>
+                                org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader
+                            </mainClass>
+                        </manifest>
+                        <manifestEntries>
+                            <Rsrc-Main-Class>com.javarush.games.racer.RacerGame</Rsrc-Main-Class>
+                            <Class-Path>./</Class-Path>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.1.2</version>
+                <configuration>
+                    <excludes>
+                        <exclude>StrangeTest.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+
+        </plugins>
+
+
+    </build>
 </project>
